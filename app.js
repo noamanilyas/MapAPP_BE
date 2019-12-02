@@ -5,13 +5,32 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cors = require('cors');
+var mysql = require("mysql");
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+// var indexRouter = require('./routes/index');
+// var homeRouter = require('./routes/home');
+// var adminRouter = require('./routes/admin');
 
 var app = express();
 
 app.use(cors())
+
+var con = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "navajo-mapping"
+});
+con.connect(function(err){
+  if(err){
+    console.log('Error connecting to Db');
+    return;
+  }
+  console.log('Connection established');
+});
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -25,8 +44,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(function(req,res,next){
+  req.con = con;
+  next();
+});
+
 app.use('/', routes);
 app.use('/users', users);
+// app.use('/home', homeRouter);
+// app.use('/admin', adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
