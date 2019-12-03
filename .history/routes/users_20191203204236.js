@@ -49,7 +49,7 @@ router.post('/register', (req, res, next) => {
 
     let query = `INSERT INTO user
 		(FirstName, LastName, Email, Password, CreateDate) 
-		VALUES(?, ?, ?, ?, ?)`;
+		VALUES(?, ?, ?, ?)`;
 
     var createdDate = moment
         .tz(Date.now(), 'America/New_York')

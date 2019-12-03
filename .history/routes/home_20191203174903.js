@@ -8,6 +8,7 @@ const secret = require('../util/config').jwt_secret;
 
 /* GET users listing. */
 router.get('/getData', function(req, res, next) {
+	console.log("getData")
   res.sendFile(path.join(__dirname, '/test2.txt'));
 });
 

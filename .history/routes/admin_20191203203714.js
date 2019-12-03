@@ -19,8 +19,7 @@ router.get('/getUsersData', function(req, res, next) {
 		IsNew, 
 		CreateDate, 
 		IsAdmin 
-        FROM user
-        ORDER BY Id DESC`;
+        FROM user`;
     
     let vals = [];
 
@@ -48,6 +47,7 @@ router.post('/changeUserAccess', function(req, res, next) {
     let vals = [req.body.isActive, req.body.id];
 
 	db.query(query, vals,function(err,rows){
+        console.log(rows);
 		if(err){
             res.send({'Status': 0, 'Msg': 'Access change failed.', 'Data': []});
         }

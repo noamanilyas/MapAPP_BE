@@ -10,8 +10,8 @@ var mysql = require("mysql");
 var routes = require('./routes/index');
 var users = require('./routes/users');
 // var indexRouter = require('./routes/index');
-var homeRouter = require('./routes/home');
-var adminRouter = require('./routes/admin');
+// var homeRouter = require('./routes/home');
+// var adminRouter = require('./routes/admin');
 const validateToken = require('./util/util').validateToken;
 
 var app = express();
@@ -49,12 +49,12 @@ app.use(function(req,res,next){
   req.con = con;
   next();
 });
-app.use('/users', users);
-
 app.use(validateToken);
-// app.use('/', routes);
-app.use('/home', homeRouter);
-app.use('/admin', adminRouter);
+
+app.use('/', routes);
+app.use('/users', users);
+// app.use('/home', homeRouter);
+// app.use('/admin', adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

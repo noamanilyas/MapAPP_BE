@@ -49,28 +49,27 @@ router.post('/register', (req, res, next) => {
 
     let query = `INSERT INTO user
 		(FirstName, LastName, Email, Password, CreateDate) 
-		VALUES(?, ?, ?, ?, ?)`;
+		VALUES(?, ?, ?, ?)`;
 
     var createdDate = moment
         .tz(Date.now(), 'America/New_York')
         .format("YYYY-MM-DD HH:mm:ss");
 
  	let vals = [req.body.firstName, req.body.lastName, req.body.email, req.body.password, createdDate]
-	console.log(vals);
+
 	db.query(query, vals,function(err,rows){
-		console.log(rows)
 		if(err){
-			console.log(err)
-			if(err.code == 'ER_DUP_ENTRY') {
-				res.send({'Status': 0, 'Msg': 'Registeration failed. Email already exists.', 'Data': []});
-			} else {
-				res.send({'Status': 0, 'Msg': 'Registeration failed.', 'Data': []});
-			}
-    } else if(rows.affectedRows == 1){
-				res.send({'Status': 1, 'Msg': 'Registeration successfull.', 'Data': []});
-		} else {
-				res.send({'Status': 0, 'Msg': 'Registeration failed.', 'Data': []});
-		}
+            if(err.code == 'ER_DUP_ENTRY') {
+                res.send({'Status': 0, 'Msg': 'Registeration failed. Email already exists.', 'Data': []});
+
+            }
+        }
+        else if(rows.affectedRows == 1){
+            res.send({'Status': 1, 'Msg': 'Registeration successfull.', 'Data': []});
+        } else {
+            res.send({'Status': 0, 'Msg': 'Registeration failed.', 'Data': []});
+            
+        }
 	});
 }); 
 

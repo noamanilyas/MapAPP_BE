@@ -49,7 +49,7 @@ router.post('/register', (req, res, next) => {
 
     let query = `INSERT INTO user
 		(FirstName, LastName, Email, Password, CreateDate) 
-		VALUES(?, ?, ?, ?, ?)`;
+		VALUES(?, ?, ?, ?)`;
 
     var createdDate = moment
         .tz(Date.now(), 'America/New_York')
@@ -60,7 +60,6 @@ router.post('/register', (req, res, next) => {
 	db.query(query, vals,function(err,rows){
 		console.log(rows)
 		if(err){
-			console.log(err)
 			if(err.code == 'ER_DUP_ENTRY') {
 				res.send({'Status': 0, 'Msg': 'Registeration failed. Email already exists.', 'Data': []});
 			} else {

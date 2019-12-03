@@ -53,7 +53,7 @@ app.use('/users', users);
 
 app.use(validateToken);
 // app.use('/', routes);
-app.use('/home', homeRouter);
+// app.use('/home', homeRouter);
 app.use('/admin', adminRouter);
 
 // catch 404 and forward to error handler

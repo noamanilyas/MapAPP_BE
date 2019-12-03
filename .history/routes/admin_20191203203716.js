@@ -19,8 +19,7 @@ router.get('/getUsersData', function(req, res, next) {
 		IsNew, 
 		CreateDate, 
 		IsAdmin 
-        FROM user
-        ORDER BY Id DESC`;
+        FROM user`;
     
     let vals = [];
 

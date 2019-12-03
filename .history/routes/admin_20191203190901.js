@@ -13,18 +13,20 @@ router.get('/getUsersData', function(req, res, next) {
 		let query = `SELECT 
 		Id, 
 		CONCAT(FirstName, ' ', LastName) AS Name, 
-		CASE WHEN IsActive = 1 THEN "Allowed" ELSE "Blocked" END AS Access,
+		CASE
+    WHEN IsActive = 1 THEN "Allowed"
+   	ELSE "Blocked" END AS Access,
 		Email, 
 		IsActive, 
 		IsNew, 
 		CreateDate, 
 		IsAdmin 
-        FROM user
-        ORDER BY Id DESC`;
+		FROM user`;
     
     let vals = [];
 
 	db.query(query, vals,function(err,rows){
+  	console.log("rowsss", rows)
 
 		if(err){
 			console.log("err", err);
@@ -46,8 +48,10 @@ router.post('/changeUserAccess', function(req, res, next) {
 		WHERE user.Id = ?`;
     
     let vals = [req.body.isActive, req.body.id];
+    console.log(vals)
 
 	db.query(query, vals,function(err,rows){
+        console.log(rows);
 		if(err){
             res.send({'Status': 0, 'Msg': 'Access change failed.', 'Data': []});
         }
