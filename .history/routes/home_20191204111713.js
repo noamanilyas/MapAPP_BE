@@ -14,6 +14,6 @@ router.get('/getData', function(req, res, next) {
 /* GET users listing. */
 router.get('/getChaptersData', function(req, res, next) {
 	res.sendFile(path.join(__dirname, '/chapter.txt'));
-});
+  });
 
 module.exports = router;
