@@ -77,7 +77,7 @@ router.post('/register', (req, res, next) => {
 		let user = {
 			name: req.body.firstName +" "+ req.body.lastName,
 			email: req.body.email,
-			reason: req.body.reason,
+			reason: "Reason",
 			
 		}
 		emailer.sendSignupEmail(user);

@@ -19,8 +19,7 @@ router.post('/login', (req, res, next) => {
 
 		let query = `SELECT Id, 
 		CONCAT(FirstName, ' ', LastName) AS Name,
-		IsAdmin,
-		IsActive
+		IsAdmin
 		FROM user WHERE Email = ? AND Password = ?`;
     
     let vals = [req.body.email, req.body.password]
@@ -30,20 +29,16 @@ router.post('/login', (req, res, next) => {
 			res.status(401).send({'Status': 0, 'Msg': 'Username or password incorrect.', 'Data': []});
 		}
 		else if(rows.length > 0){
-			if(rows[0].IsActive) {
-				var resp = {
-					name: rows[0].Name,
-					id: rows[0].Id,
-					admin: rows[0].IsAdmin
-				}
-				const token = jwt.sign(resp, secret, { expiresIn: '2d'});
-	
-				resp['token'] = token
-	
-				res.send({'Status': 1, 'Msg': 'Login successfull.', 'Data': resp});
-			} else {
-				res.status(202).send({'Status': 0, 'Msg': 'Pending approval.', 'Data': []});
+			var resp = {
+				name: rows[0].Name,
+				id: rows[0].Id,
+				admin: rows[0].IsAdmin
 			}
+			const token = jwt.sign(resp, secret, { expiresIn: '2d'});
+
+			resp['token'] = token
+
+			res.send({'Status': 1, 'Msg': 'Login successfull.', 'Data': resp});
 		} else {
 			res.status(401).send({'Status': 0, 'Msg': 'Username or password incorrect.', 'Data': []});
 				
@@ -55,14 +50,14 @@ router.post('/register', (req, res, next) => {
     let db = req.con;
 
     let query = `INSERT INTO user
-		(FirstName, LastName, Email, Password, CreateDate, Reason) 
-		VALUES(?, ?, ?, ?, ?, ?)`;
+		(FirstName, LastName, Email, Password, CreateDate) 
+		VALUES(?, ?, ?, ?, ?)`;
 
     var createdDate = moment
         .tz(Date.now(), 'America/New_York')
         .format("YYYY-MM-DD HH:mm:ss");
 
- 	let vals = [req.body.firstName, req.body.lastName, req.body.email, req.body.password, createdDate, req.body.reason]
+ 	let vals = [req.body.firstName, req.body.lastName, req.body.email, req.body.password, createdDate]
 	console.log(vals);
 	db.query(query, vals,function(err,rows){
 		console.log(rows)
@@ -77,7 +72,7 @@ router.post('/register', (req, res, next) => {
 		let user = {
 			name: req.body.firstName +" "+ req.body.lastName,
 			email: req.body.email,
-			reason: req.body.reason,
+			reason: "Reason",
 			
 		}
 		emailer.sendSignupEmail(user);

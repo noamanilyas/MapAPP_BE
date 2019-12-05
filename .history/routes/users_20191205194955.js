@@ -44,6 +44,8 @@ router.post('/login', (req, res, next) => {
 			} else {
 				res.status(202).send({'Status': 0, 'Msg': 'Pending approval.', 'Data': []});
 			}
+
+			
 		} else {
 			res.status(401).send({'Status': 0, 'Msg': 'Username or password incorrect.', 'Data': []});
 				
@@ -55,14 +57,14 @@ router.post('/register', (req, res, next) => {
     let db = req.con;
 
     let query = `INSERT INTO user
-		(FirstName, LastName, Email, Password, CreateDate, Reason) 
-		VALUES(?, ?, ?, ?, ?, ?)`;
+		(FirstName, LastName, Email, Password, CreateDate) 
+		VALUES(?, ?, ?, ?, ?)`;
 
     var createdDate = moment
         .tz(Date.now(), 'America/New_York')
         .format("YYYY-MM-DD HH:mm:ss");
 
- 	let vals = [req.body.firstName, req.body.lastName, req.body.email, req.body.password, createdDate, req.body.reason]
+ 	let vals = [req.body.firstName, req.body.lastName, req.body.email, req.body.password, createdDate]
 	console.log(vals);
 	db.query(query, vals,function(err,rows){
 		console.log(rows)
@@ -77,7 +79,7 @@ router.post('/register', (req, res, next) => {
 		let user = {
 			name: req.body.firstName +" "+ req.body.lastName,
 			email: req.body.email,
-			reason: req.body.reason,
+			reason: "Reason",
 			
 		}
 		emailer.sendSignupEmail(user);
